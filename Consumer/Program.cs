@@ -3,11 +3,13 @@ using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Add services to the container.
 string sHostName = "localhost";
 string sUserName = "guest";
 string sPassword = "guest";
+
+string sQueueName = "feature_queue";
+string sExchangeName = "feature_exchange";
+string sRoutingKey = "feature_key";
 
 builder.Services.AddSingleton<IConnectionFactory>(sp =>
 {
@@ -18,6 +20,16 @@ builder.Services.AddSingleton<IConnectionFactory>(sp =>
         Password = sPassword
     };
 });
+builder.Services.AddSingleton<RabbitMqConfig>(sp =>
+{
+    return new RabbitMqConfig
+    {
+        ExchangeName = sExchangeName,
+        RoutingKey = sRoutingKey,
+        QueueName = sQueueName
+    };
+});
+
 builder.Services.AddSingleton<IRabbitMqConnectionService, RabbitMqConnectionService>();
 builder.Services.AddSingleton<RabbitMqConsumer>();
 builder.Services.AddHostedService<RabbitMqConsumerService>();

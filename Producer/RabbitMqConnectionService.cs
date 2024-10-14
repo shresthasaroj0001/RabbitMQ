@@ -22,4 +22,9 @@ namespace Producer
         }
     }
 
+    public class RabbitMqConfig
+    {
+        public required string RoutingKey { get; set; }
+        public required string ExchangeName { get; set; }
+    }
 }

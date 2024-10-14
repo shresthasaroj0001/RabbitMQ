@@ -15,12 +15,18 @@
         {
             try
             {
-                Console.WriteLine("Start Consuming");
-                await _consumer.StartConsumingAsync(_cts.Token);
+                Console.WriteLine("Initiating RabbitMQ");
+                await _consumer.StartConsumingAsync(stoppingToken);
             }
             catch (OperationCanceledException)
             {
-                // This exception is thrown when the service is stopped
+                // Handle the cancellation gracefully
+                Console.WriteLine("Operation canceled, shutting down consumer service.");
+            }
+            catch (Exception ex)
+            {
+                // Log any unexpected errors during execution
+                Console.WriteLine($"Unexpected error occurred: {ex.Message}");
             }
         }
     }
